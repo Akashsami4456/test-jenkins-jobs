@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Hello Akash sami from Jenkins!'
+                echo 'Hello Akash sami from Jenkins Test!'
             }
         }
     }
