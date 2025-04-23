@@ -1,3 +1,3 @@
 # test-jenkins-jobs
 
-# test PR trigger test 06 PR OFJ
+# test PR trigger test 07 event capture PR
