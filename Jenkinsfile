@@ -1,54 +1,47 @@
 pipeline {
     agent any
+
     stages {
         stage('Build') {
-            steps {
-                echo 'Hello Akash sami from Jenkins Test!'
+            stages {
+                stage('Compile') {
+                    steps {
+                        echo 'Compiling...'
+                        sleep 5
+                    }
+                }
+                stage('Package') {
+                    steps {
+                        echo 'Packaging...'
+                        sleep 5
+                    }
+                }
             }
         }
+
+        stage('Registering build artifact') {
+            steps {
+                echo 'Registering the metadata'
+                echo 'Another echo to make the pipeline a bit more complex'
+                registerBuildArtifactMetadata(
+                    name: "artifact-prod-test-1",
+                    version: "1.0.1",
+                    type: "docker",
+                    url: "http://localhost:1111",
+                    digest: "6f637064707039346163663237383938",
+                    label: "preprod,test"
+                )
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running Unit Tests...'
+                sleep 5
+                echo 'Running Integration Tests...'
+                sleep 5
+            }
+        }
+
     }
 }
-
-// pipeline {
-//     agent any
-
-//     triggers {
-//         cron('H/2 * * * *') // Every 2 minutes
-//     }
-
-//     stages {
-//         stage('Scheduled Build') {
-//             steps {
-//                 echo "Build triggered by cron at ${new Date()}"
-//             }
-//         }
-//     }
-// }
-
-
-// pipeline {
-//   agent any
-//   triggers {
-//     GenericTrigger(
-//       genericVariables: [
-//         [key: 'PR_ACTION', value: '$.action'],
-//         [key: 'PR_NUMBER', value: '$.number'],
-//         [key: 'PR_BRANCH', value: '$.pull_request.head.ref'],
-//         [key: 'PR_BASE', value: '$.pull_request.base.ref']
-//       ],
-//       causeString: 'Triggered on PR: $PR_ACTION #$PR_NUMBER from $PR_BRANCH → $PR_BASE',
-//       printContributedVariables: true,
-//       printPostContent: true
-//     )
-//   }
-//   stages {
-//     stage('PR Event Triggered') {
-//       steps {
-//         echo "GitHub PR Action: ${env.PR_ACTION}"
-//         echo "PR Number: ${env.PR_NUMBER}"
-//         echo "Source Branch: ${env.PR_BRANCH}"
-//         echo "Target Branch: ${env.PR_BASE}"
-//       }
-//     }
-//   }
-// }
